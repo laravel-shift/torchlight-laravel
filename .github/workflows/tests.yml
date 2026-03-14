@@ -95,20 +95,20 @@ jobs:
       - name: Execute tests
         run: vendor/bin/phpunit
 
-      - name: Install Livewire V2 (Below Laravel 11.0)
-        if: ! startsWith(matrix.laravel, '11.') && ! startsWith(matrix.laravel, '12.')
+      - name: Install Livewire V2 (Laravel 8-10)
+        if: startsWith(matrix.laravel, '8.') || startsWith(matrix.laravel, '9.') || startsWith(matrix.laravel, '10.')
         run: |
           composer require "livewire/livewire:^2.3.10" -W --${{ matrix.dependency-version }} --no-interaction
 
       - name: Test with Livewire V2
-        if: ! startsWith(matrix.laravel, '11.') && ! startsWith(matrix.laravel, '12.')
+        if: startsWith(matrix.laravel, '8.') || startsWith(matrix.laravel, '9.') || startsWith(matrix.laravel, '10.')
         run: vendor/bin/phpunit
 
-      - name: Install Livewire V3 (Above Laravel 9.0)
-        if: ! startsWith(matrix.laravel, '8.') && ! startsWith(matrix.laravel, '9.')
+      - name: Install Livewire V3 (Laravel 10+ on PHP 8.1+)
+        if: matrix.php != '8.0' && (startsWith(matrix.laravel, '10.') || startsWith(matrix.laravel, '11.') || startsWith(matrix.laravel, '12.') || startsWith(matrix.laravel, '13.'))
         run: |
           composer require "livewire/livewire:^3" -W --${{ matrix.dependency-version }} --no-interaction
 
       - name: Test with Livewire V3
-        if: ! startsWith(matrix.laravel, '8.') && ! startsWith(matrix.laravel, '9.')
+        if: matrix.php != '8.0' && (startsWith(matrix.laravel, '10.') || startsWith(matrix.laravel, '11.') || startsWith(matrix.laravel, '12.') || startsWith(matrix.laravel, '13.'))
         run: vendor/bin/phpunit
